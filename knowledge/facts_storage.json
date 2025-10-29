@@ -1,0 +1,40 @@
+{
+  "tickets_procesados": [
+    {
+      "id_ticket": "TK20251029002420",
+      "contenido": "Falla de impresora",
+      "cliente": "Gian",
+      "area": "Cliente",
+      "fecha": "2025-10-29",
+      "regla": "Regla 1: Problema de Impresora",
+      "tipo": "EQUIPOS DE IMPRESIÓN/ESCÁNER",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Hardware - Impresoras",
+      "fecha_procesamiento": "2025-10-29 00:24:20"
+    },
+    {
+      "id_ticket": "TK20251029002523",
+      "contenido": "Acceso a nuevo usuario\n",
+      "cliente": "Zaleth",
+      "area": "TI",
+      "fecha": "2025-10-29",
+      "regla": "Sin clasificar",
+      "tipo": "GENERAL",
+      "prioridad": "Baja",
+      "asignado_a": "Revisar manualmente",
+      "fecha_procesamiento": "2025-10-29 00:25:23"
+    },
+    {
+      "id_ticket": "TK20251029002603",
+      "contenido": "Acceso a la red",
+      "cliente": "Zaleth",
+      "area": "TI",
+      "fecha": "2025-10-29",
+      "regla": "Regla 2: Problema de Red",
+      "tipo": "PC/LAPTOP",
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Redes",
+      "fecha_procesamiento": "2025-10-29 00:26:03"
+    }
+  ]
+}

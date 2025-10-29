@@ -1,174 +1,225 @@
-"""
-Pruebas automatizadas del Sistema Experto
-[gians] Aquí probamos que las reglas funcionen correctamente
-"""
+# tests/test_rules.py
+# Pruebas unitarias para las 10 reglas del sistema experto
+
+# Parche para compatibilidad con Python 3.12
+import collections
+import collections.abc
+collections.Mapping = collections.abc.Mapping
+collections.MutableMapping = collections.abc.MutableMapping
 
 import pytest
-import sys
-import os
+from engine.classification_engine import TicketClassificationEngine
+from engine.ticket_fact import Ticket
 
-# [gians] Agregar el directorio padre al path
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+def test_regla_impresora():
+    """Prueba para regla de problemas con impresora"""
+    motor = TicketClassificationEngine()
+    motor.reset()
+    
+    # Crear ticket con problema de impresora
+    motor.declare(Ticket(
+        id_ticket="TEST001",
+        contenido="mi impresora no funciona",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
+    
+    # Ejecutar motor
+    motor.run()
+    
+    # Verificar resultado
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['tipo'] == 'EQUIPOS DE IMPRESIÓN/ESCÁNER'
+    assert motor.resultados[0]['prioridad'] == 'Media'
+    print("✅ Test regla impresora: PASÓ")
 
-from engine.inference_engine import MotorInferencia
-from knowledge.rules import clasificar_ticket_simple
+def test_regla_red():
+    """Prueba para regla de problemas de red"""
+    motor = TicketClassificationEngine()
+    motor.reset()
+    
+    motor.declare(Ticket(
+        id_ticket="TEST002",
+        contenido="no tengo internet",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
+    
+    motor.run()
+    
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['tipo'] == 'PC/LAPTOP'
+    assert motor.resultados[0]['prioridad'] == 'Alta'
+    print("✅ Test regla red: PASÓ")
 
+def test_regla_instalacion_software():
+    """Prueba para regla de instalación de software"""
+    motor = TicketClassificationEngine()
+    motor.reset()
+    
+    motor.declare(Ticket(
+        id_ticket="TEST003",
+        contenido="necesito instalar un programa",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
+    
+    motor.run()
+    
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['prioridad'] == 'Baja'
+    print("✅ Test regla instalación software: PASÓ")
 
-class TestMotorInferencia:
-    """Pruebas del motor de inferencia"""
+def test_regla_sistema_corporativo():
+    """Prueba para regla de sistemas corporativos"""
+    motor = TicketClassificationEngine()
+    motor.reset()
     
-    def setup_method(self):
-        """Configurar antes de cada test"""
-        # [gians] Crear un motor nuevo para cada prueba
-        self.motor = MotorInferencia()
+    motor.declare(Ticket(
+        id_ticket="TEST004",
+        contenido="el sistema SIGA no funciona",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
     
-    def test_motor_inicializa_correctamente(self):
-        """Probar que el motor se inicializa bien"""
-        assert self.motor.tickets_procesados == 0
-        assert len(self.motor.historial) == 0
+    motor.run()
     
-    def test_procesar_ticket_vacio_da_error(self):
-        """Probar que un ticket vacío da error"""
-        resultado = self.motor.procesar_ticket("")
-        assert "error" in resultado
-        assert resultado["categoria"] is None
-    
-    def test_procesar_ticket_incrementa_contador(self):
-        """Probar que procesar tickets incrementa el contador"""
-        self.motor.procesar_ticket("Mi computadora no funciona")
-        assert self.motor.tickets_procesados == 1
-        
-        self.motor.procesar_ticket("El internet está lento")
-        assert self.motor.tickets_procesados == 2
-    
-    def test_obtener_estadisticas_vacio(self):
-        """Probar estadísticas cuando no hay tickets"""
-        stats = self.motor.obtener_estadisticas()
-        assert stats["total"] == 0
-        assert stats["por_categoria"] == {}
-    
-    def test_limpiar_historial(self):
-        """Probar que limpiar historial funciona"""
-        self.motor.procesar_ticket("Test ticket")
-        assert self.motor.tickets_procesados == 1
-        
-        self.motor.limpiar_historial()
-        assert self.motor.tickets_procesados == 0
-        assert len(self.motor.historial) == 0
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['tipo'] == 'SISTEMA'
+    assert motor.resultados[0]['prioridad'] == 'Alta'
+    print("✅ Test regla sistema corporativo: PASÓ")
 
+def test_regla_contrasena():
+    """Prueba para regla de problemas de contraseña"""
+    motor = TicketClassificationEngine()
+    motor.reset()
+    
+    motor.declare(Ticket(
+        id_ticket="TEST005",
+        contenido="mi contraseña está bloqueada",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
+    
+    motor.run()
+    
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['prioridad'] == 'Media'
+    print("✅ Test regla contraseña: PASÓ")
 
-class TestReglas:
-    """Pruebas de las reglas de clasificación"""
+def test_regla_equipo_no_enciende():
+    """Prueba para regla de equipo que no enciende"""
+    motor = TicketClassificationEngine()
+    motor.reset()
     
-    def test_clasificar_hardware_urgente(self):
-        """Probar clasificación de hardware urgente"""
-        texto = "URGENTE: Mi computadora no enciende"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert resultado["categoria"] == "hardware"
-        assert resultado["tipo"] == "incidencia"
-        assert resultado["prioridad"] == "alta"
+    motor.declare(Ticket(
+        id_ticket="TEST006",
+        contenido="mi laptop no enciende",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
     
-    def test_clasificar_software_normal(self):
-        """Probar clasificación de software normal"""
-        texto = "Tengo un problema con Excel, no abre archivos"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert resultado["categoria"] == "software"
-        assert resultado["tipo"] == "incidencia"
+    motor.run()
     
-    def test_clasificar_redes_urgente(self):
-        """Probar clasificación de redes urgente"""
-        texto = "No hay internet en la oficina, es urgente"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert resultado["categoria"] == "redes"
-        assert resultado["prioridad"] == "alta"
-    
-    def test_clasificar_seguridad_critica(self):
-        """Probar clasificación de seguridad crítica"""
-        texto = "Creo que tengo un virus, es urgente"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert resultado["categoria"] == "seguridad"
-        assert resultado["prioridad"] == "alta"
-    
-    def test_clasificar_solicitud_software(self):
-        """Probar clasificación de solicitud de software"""
-        texto = "Me gustaría saber cómo instalar Office"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert resultado["categoria"] == "software"
-        assert resultado["tipo"] == "solicitud"
-        assert resultado["prioridad"] == "baja"
-    
-    def test_clasificar_solicitud_hardware(self):
-        """Probar clasificación de solicitud de hardware"""
-        texto = "Necesito un mouse nuevo por favor"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert resultado["categoria"] == "hardware"
-        assert resultado["tipo"] == "solicitud"
-    
-    def test_resultado_tiene_accion(self):
-        """Probar que siempre se genera una acción"""
-        texto = "Mi computadora está lenta"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert "accion" in resultado
-        assert resultado["accion"] != ""
-    
-    def test_resultado_tiene_conteos(self):
-        """Probar que se incluyen conteos de palabras"""
-        texto = "La impresora no funciona"
-        resultado = clasificar_ticket_simple(texto)
-        
-        assert "conteos" in resultado
-        assert isinstance(resultado["conteos"], dict)
-        assert resultado["conteos"]["hardware"] > 0
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['prioridad'] == 'Alta'
+    print("✅ Test regla equipo no enciende: PASÓ")
 
-
-class TestIntegracion:
-    """Pruebas de integración del sistema completo"""
+def test_regla_correo():
+    """Prueba para regla de problemas de correo"""
+    motor = TicketClassificationEngine()
+    motor.reset()
     
-    def test_flujo_completo_ticket(self):
-        """Probar el flujo completo de procesamiento"""
-        motor = MotorInferencia()
-        
-        # Procesar ticket
-        resultado = motor.procesar_ticket(
-            "URGENTE: Mi PC no enciende",
-            "TKT-001"
-        )
-        
-        # Verificar resultado
-        assert resultado["id_ticket"] == "TKT-001"
-        assert resultado["categoria"] == "hardware"
-        assert resultado["prioridad"] == "alta"
-        assert "accion" in resultado
-        
-        # Verificar estadísticas
-        stats = motor.obtener_estadisticas()
-        assert stats["total"] == 1
-        assert "hardware" in stats["por_categoria"]
+    motor.declare(Ticket(
+        id_ticket="TEST007",
+        contenido="no puedo acceder a mi correo",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
     
-    def test_multiples_tickets(self):
-        """Probar procesar múltiples tickets"""
-        motor = MotorInferencia()
-        
-        tickets = [
-            "Mi computadora no funciona",
-            "El internet está lento",
-            "Necesito instalar Office"
-        ]
-        
-        for ticket in tickets:
-            motor.procesar_ticket(ticket)
-        
-        stats = motor.obtener_estadisticas()
-        assert stats["total"] == 3
+    motor.run()
+    
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['tipo'] == 'SISTEMA'
+    print("✅ Test regla correo: PASÓ")
 
+def test_regla_asesoria():
+    """Prueba para regla de asesoría general"""
+    motor = TicketClassificationEngine()
+    motor.reset()
+    
+    motor.declare(Ticket(
+        id_ticket="TEST008",
+        contenido="necesito ayuda con algo",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
+    
+    motor.run()
+    
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['tipo'] == 'GENERAL'
+    print("✅ Test regla asesoría: PASÓ")
 
-# [gians] Ejecutar pruebas si se corre directamente este archivo
+def test_regla_equipo_lento():
+    """Prueba para regla de equipo lento"""
+    motor = TicketClassificationEngine()
+    motor.reset()
+    
+    motor.declare(Ticket(
+        id_ticket="TEST009",
+        contenido="mi computadora está muy lenta",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
+    
+    motor.run()
+    
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['prioridad'] == 'Media'
+    print("✅ Test regla equipo lento: PASÓ")
+
+def test_regla_habilitacion():
+    """Prueba para regla de habilitaciones"""
+    motor = TicketClassificationEngine()
+    motor.reset()
+    
+    motor.declare(Ticket(
+        id_ticket="TEST010",
+        contenido="necesito habilitar mi cuenta",
+        cliente="Test User",
+        area="Test Area",
+        fecha="2025-10-28"
+    ))
+    
+    motor.run()
+    
+    assert len(motor.resultados) > 0
+    assert motor.resultados[0]['tipo'] == 'GENERAL'
+    print("✅ Test regla habilitación: PASÓ")
+
+# Ejecutar todas las pruebas
 if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
+    print("\n🧪 Ejecutando pruebas del sistema experto...\n")
+    
+    test_regla_impresora()
+    test_regla_red()
+    test_regla_instalacion_software()
+    test_regla_sistema_corporativo()
+    test_regla_contrasena()
+    test_regla_equipo_no_enciende()
+    test_regla_correo()
+    test_regla_asesoria()
+    test_regla_equipo_lento()
+    test_regla_habilitacion()
+    
+    print("\n✨ ¡Todas las pruebas pasaron exitosamente!")

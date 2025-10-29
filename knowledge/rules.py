@@ -3,7 +3,7 @@ Base de Conocimiento - Reglas del Sistema Experto
 [gians] Aquí definimos las reglas que el sistema usará para clasificar tickets
 """
 
-from durable.lang import *
+from durable_rules.lang import *
 
 # [gians] Constantes para las categorías y prioridades
 CATEGORIAS = ["hardware", "software", "redes", "seguridad"]
