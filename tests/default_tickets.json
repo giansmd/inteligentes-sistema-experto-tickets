@@ -1,0 +1,74 @@
+{
+  "tickets": [
+    {
+      "id_ticket": "TK001",
+      "contenido": "Mi impresora tiene un atasco de papel y no puedo imprimir",
+      "cliente": "Juan Pérez",
+      "area": "Recursos Humanos",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK002",
+      "contenido": "No tengo internet, mi computadora no se conecta a la red",
+      "cliente": "María García",
+      "area": "Contabilidad",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK003",
+      "contenido": "Necesito que me instalen el software AutoCAD para mi trabajo",
+      "cliente": "Carlos López",
+      "area": "Ingeniería",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK004",
+      "contenido": "El sistema SIGA no me deja entrar, dice error de conexión",
+      "cliente": "Ana Martínez",
+      "area": "Logística",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK005",
+      "contenido": "Mi contraseña de dominio está expirada y no puedo cambiarla",
+      "cliente": "Pedro Sánchez",
+      "area": "Ventas",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK006",
+      "contenido": "Mi laptop no enciende, presiono el botón y no pasa nada",
+      "cliente": "Laura Torres",
+      "area": "Marketing",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK007",
+      "contenido": "No puedo acceder a mi correo corporativo de Gmail",
+      "cliente": "Roberto Díaz",
+      "area": "Administración",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK008",
+      "contenido": "Necesito ayuda, no sé cómo usar el sistema de papeletas",
+      "cliente": "Carmen Ruiz",
+      "area": "Recursos Humanos",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK009",
+      "contenido": "Mi computadora está muy lenta, tarda mucho en abrir programas",
+      "cliente": "Luis Fernández",
+      "area": "IT",
+      "fecha": "2025-10-28"
+    },
+    {
+      "id_ticket": "TK010",
+      "contenido": "Necesito que me habiliten acceso al servidor de la red",
+      "cliente": "Sandra Morales",
+      "area": "Finanzas",
+      "fecha": "2025-10-28"
+    }
+  ]
+}

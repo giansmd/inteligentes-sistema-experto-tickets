@@ -112,7 +112,7 @@ if opcion == "🏠 Dashboard":
     
     # Botón para cargar tickets de ejemplo
     if st.button("🔄 Procesar Tickets de Ejemplo"):
-        tickets = cargar_tickets_desde_json('data/default_tickets.json')
+        tickets = cargar_tickets_desde_json('tests/default_tickets.json')
         
         if tickets:
             st.success(f"✅ Se cargaron {len(tickets)} tickets")
