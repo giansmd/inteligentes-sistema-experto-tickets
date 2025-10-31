@@ -3,3 +3,5 @@ streamlit
 pytest
 plotly
 pandas
+reportlab
+kaleido

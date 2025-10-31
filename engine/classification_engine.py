@@ -44,7 +44,7 @@ class TicketClassificationEngine(KnowledgeEngine):
           return
 
         # Regla: Seguridad informática - Malware / Phishing (Prioridad Alta)
-        elifany(palabra in contenido for palabra in ['virus', 'malware', 'ransomware', 'phishing', 'phising', 'adjunto sospechoso', 'suplantación']):
+        elif any(palabra in contenido for palabra in ['virus', 'malware', 'ransomware', 'phishing', 'phising', 'adjunto sospechoso', 'suplantación']):
             self.resultados.append({
               'regla': 'Regla: Incidente de Seguridad',
               'tipo': 'SEGURIDAD',

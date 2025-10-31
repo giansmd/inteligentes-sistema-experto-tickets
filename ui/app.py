@@ -16,6 +16,8 @@ from datetime import datetime
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
+from estadisticas import mostrar_estadisticas
+
 
 # Agregar el directorio raíz al path de Python
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -103,15 +105,92 @@ def clasificar_ticket(ticket_data):
             'asignado_a': 'Revisar manualmente'
         }
 
-# Sidebar - Menú de navegación
+
+# Sidebar - Menú de navegación sincronizado con session_state
 st.sidebar.title("📋 Menú")
+
+# Lista de opciones del menú
+menu_opciones = ["🏠 Inicio", "📊 Dashboard", "➕ Nuevo Ticket", "📈 Estadísticas", "⚙️ Configuración"]
+
+# Inicializar session_state si no existe
+if "opcion_menu" not in st.session_state:
+    st.session_state["opcion_menu"] = "🏠 Inicio"
+
+# Sincronizar el valor seleccionado en el sidebar
 opcion = st.sidebar.radio(
     "Selecciona una opción:",
-    ["🏠 Dashboard", "➕ Nuevo Ticket", "📊 Estadísticas", "⚙️ Configuración"]
+    menu_opciones,
+    index=menu_opciones.index(st.session_state["opcion_menu"])
 )
 
+# Actualizar session_state al cambiar manualmente en el sidebar
+if opcion != st.session_state["opcion_menu"]:
+    st.session_state["opcion_menu"] = opcion
+    st.rerun()
+
+# Usar siempre la opción almacenada en session_state
+opcion = st.session_state["opcion_menu"]
+
+# OPCIÓN INICIO
+
+if opcion == "🏠 Inicio":
+    st.header("🧠 Propósito del Sistema")
+
+    st.markdown("""
+    El **Sistema Experto de Service Desk** tiene como propósito **automatizar la clasificación de tickets de soporte técnico**.  
+    A través de un motor de inferencia basado en reglas (usando la librería *Experta*), el sistema analiza el contenido de cada solicitud y determina automáticamente:
+
+    - El **tipo de ticket** (incidente, requerimiento, consulta, etc.)  
+    - La **prioridad** (alta, media, baja)  
+    - El **personal o área asignada** para su atención  
+
+    Esto permite **ahorrar tiempo**, **reducir errores humanos** y **mejorar la eficiencia** del servicio de soporte.
+    """)
+
+    st.markdown("---")
+    st.subheader("🪜 Instrucciones para utilizar el sistema")
+
+    st.markdown("""
+    1. Dirígete a **"➕ Nuevo Ticket"** para registrar una solicitud.  
+    2. Completa los campos requeridos.  
+    3. Presiona **"Procesar Ticket"** para que el sistema lo analice.  
+    4. Consulta los resultados en el **Dashboard** o en **Estadísticas**.
+    """)
+
+    st.markdown("---")
+    st.subheader("⚡ Atajos rápidos")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("📊 Ir al Dashboard"):
+            st.session_state["opcion_menu"] = "📊 Dashboard"
+            st.rerun()
+
+    with col2:
+        if st.button("➕ Crear un Nuevo Ticket"):
+            st.session_state["opcion_menu"] = "➕ Nuevo Ticket"
+            st.rerun()
+
+    with col3:
+        if st.button("📈 Ver Estadísticas"):
+            st.session_state["opcion_menu"] = "📈 Estadísticas"
+            st.rerun()
+
+    st.markdown("""
+    <div style='background-color: rgba(150,150,171,0.15);
+                padding: 1rem;
+                border-radius: 10px;
+                margin-top: 2rem;
+                text-align: center;'>
+        <h4>💡 Consejo:</h4>
+        <p>Puedes cambiar entre modo claro y oscuro desde 
+        <b>☰ → Settings → Theme</b> en la esquina superior derecha.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
 # OPCIÓN 1: Dashboard
-if opcion == "🏠 Dashboard":
+elif opcion == "📊 Dashboard":
     st.header("Dashboard de Tickets")
     
     # Botón para cargar tickets de ejemplo
@@ -224,117 +303,9 @@ elif opcion == "➕ Nuevo Ticket":
 
 
 # Reemplazar la sección de estadísticas con:
-elif opcion == "📊 Estadísticas":
+elif opcion == "📈 Estadísticas":
     st.header("Estadísticas del Sistema")
-    
-    try:
-        ruta = os.path.join(os.path.dirname(__file__), '..', 'knowledge', 'facts_storage.json')
-        with open(ruta, 'r', encoding='utf-8') as f:
-            datos = json.load(f)
-            tickets = datos.get('tickets_procesados', [])
-        
-        if tickets:
-            # Contadores
-            categorias = {}
-            prioridades = {}
-            equipos = {}
-            
-            for ticket in tickets:
-                tipo = ticket.get('tipo', 'Sin clasificar')
-                categorias[tipo] = categorias.get(tipo, 0) + 1
-                prioridad = ticket.get('prioridad', 'Sin prioridad')
-                prioridades[prioridad] = prioridades.get(prioridad, 0) + 1
-                equipo = ticket.get('asignado_a', 'Sin asignar')
-                equipos[equipo] = equipos.get(equipo, 0) + 1
-
-            # KPIs principales con animación
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                cuenta = len(tickets)
-                st.write("### 📊 Total Tickets")
-                st.markdown(f"""
-                <div style='text-align: center; animation: grow 1s ease-out;'>
-                    <h1 style='font-size: 3em; color: #1f77b4;'>{cuenta}</h1>
-                </div>
-                """, unsafe_allow_html=True)
-
-            with col2:
-                alta_prioridad = prioridades.get('Alta', 0)
-                porcentaje = (alta_prioridad / cuenta) * 100
-                st.write("### 🚨 Alta Prioridad")
-                st.markdown(f"""
-                <div style='text-align: center; animation: grow 1s ease-out;'>
-                    <h1 style='font-size: 3em; color: #ff4b4b;'>{alta_prioridad}</h1>
-                    <p>({porcentaje:.1f}%)</p>
-                </div>
-                """, unsafe_allow_html=True)
-
-            with col3:
-                st.write("### 📑 Categorías")
-                st.markdown(f"""
-                <div style='text-align: center; animation: grow 1s ease-out;'>
-                    <h1 style='font-size: 3em; color: #50af50;'>{len(categorias)}</h1>
-                </div>
-                """, unsafe_allow_html=True)
-
-            st.markdown("---")
-
-            # Gráfico de barras para tipos de ticket
-            df_tipos = pd.DataFrame(list(categorias.items()), columns=['Tipo', 'Cantidad'])
-            fig_tipos = px.bar(df_tipos, x='Tipo', y='Cantidad',
-                             title='Distribución por Tipo de Ticket',
-                             color='Cantidad',
-                             color_continuous_scale='Viridis')
-            st.plotly_chart(fig_tipos, use_container_width=True)
-
-            # Gráfico circular para prioridades
-            df_prioridades = pd.DataFrame(list(prioridades.items()), columns=['Prioridad', 'Cantidad'])
-            fig_prioridades = px.pie(df_prioridades, values='Cantidad', names='Prioridad',
-                                   title='Distribución por Prioridad',
-                                   hole=0.3,
-                                   color_discrete_sequence=px.colors.sequential.RdBu)
-            st.plotly_chart(fig_prioridades, use_container_width=True)
-
-            # Contadores por categoría en grid de 3x3
-            st.markdown("### 📊 Desglose por Categoría")
-            categorias_sorted = sorted(categorias.items(), key=lambda x: x[1], reverse=True)
-            
-            for i in range(0, len(categorias_sorted), 2):
-                cols = st.columns(2)
-                for j in range(2):
-                    if i + j < len(categorias_sorted):
-                        cat, count = categorias_sorted[i + j]
-                        with cols[j]:
-                            st.markdown(f"""
-                            <div style='background-color: #f0f2f8; padding: 1rem; border-radius: 10px; text-align: center; margin-bottom: 1rem; animation: grow 1s ease-out;'>
-                                <h4>{cat}</h4>
-                                <div style='font-size: 2em; color: #1f77b4;'>{count}</div>
-                                <div style='font-size: 0.8em; color: #666;'>tickets</div>
-                            </div>
-                            """, unsafe_allow_html=True)
-
-            # Agregar CSS para animaciones
-            st.markdown("""
-            <style>
-            @keyframes grow {
-                from {
-                    transform: scale(0);
-                    opacity: 0;
-                }
-                to {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-            }
-            </style>
-            """, unsafe_allow_html=True)
-
-        else:
-            st.info("No hay datos para mostrar estadísticas")
-    
-    except Exception as e:
-        st.error(f"Error al cargar estadísticas: {e}")
+    mostrar_estadisticas()
 
 # OPCIÓN 4: Configuración
 elif opcion == "⚙️ Configuración":
