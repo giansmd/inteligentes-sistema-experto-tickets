@@ -203,6 +203,18 @@
       "prioridad": "Alta",
       "asignado_a": "Equipo de Seguridad Informática",
       "fecha_procesamiento": "2025-10-30 23:17:09"
+    },
+    {
+      "id_ticket": "TK20251031090945",
+      "contenido": "No funciona la aplicación de la empresa",
+      "cliente": "Gian",
+      "area": "Finanzas",
+      "fecha": "2025-10-31",
+      "regla": "Sin clasificar",
+      "tipo": "SOFTWARE",
+      "prioridad": "Baja",
+      "asignado_a": "Equipo de Software",
+      "fecha_procesamiento": "2025-10-31 09:09:45"
     }
   ]
 }
