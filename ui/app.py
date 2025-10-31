@@ -11,6 +11,7 @@ import streamlit as st
 import json
 import os
 import sys
+import unicodedata
 from datetime import datetime
 # Agregar imports en la parte superior
 import plotly.express as px
@@ -24,6 +25,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from engine.classification_engine import TicketClassificationEngine
 from engine.ticket_fact import Ticket
+
+def normalizar(texto):
+    texto = texto.lower()
+    texto = unicodedata.normalize('NFKD', texto).encode('ascii', 'ignore').decode('utf-8')
+    texto = texto.strip()
+    return texto
 
 # Configuración de la página
 st.set_page_config(
@@ -110,7 +117,7 @@ def clasificar_ticket(ticket_data):
 st.sidebar.title("📋 Menú")
 
 # Lista de opciones del menú
-menu_opciones = ["🏠 Inicio", "📊 Dashboard", "➕ Nuevo Ticket", "📈 Estadísticas", "⚙️ Configuración"]
+menu_opciones = ["🏠 Inicio", "📊 Dashboard", "➕ Nuevo Ticket", "📈 Estadísticas", "⚙️ Configuración", "🧐 Tests"]
 
 # Inicializar session_state si no existe
 if "opcion_menu" not in st.session_state:
@@ -252,6 +259,15 @@ elif opcion == "📊 Dashboard":
 # OPCIÓN 2: Nuevo Ticket
 elif opcion == "➕ Nuevo Ticket":
     st.header("Crear Nuevo Ticket")
+
+    try:
+        ruta_areas = os.path.join(os.path.dirname(__file__), '..', 'knowledge', 'areas_empresa.json')
+        with open(ruta_areas, 'r', encoding='utf-8') as f:
+            areas_data = json.load(f)
+            json_areas = [area_obj['nombre'] for area_obj in areas_data.get('areas', [])]
+    except Exception as e:
+        st.error(f"Error al cargar áreas: {e}")
+        json_areas = []
     
     with st.form("form_nuevo_ticket"):
         col1, col2 = st.columns(2)
@@ -266,38 +282,46 @@ elif opcion == "➕ Nuevo Ticket":
             contenido = st.text_area("Descripción del Problema", height=150)
         
         submitted = st.form_submit_button("🚀 Procesar Ticket")
-        
-        if submitted:
 
-            if contenido.strip() and cliente and area:
-                # Crear el ticket
-                nuevo_ticket = {
-                    'id_ticket': id_ticket,
-                    'contenido': contenido,
-                    'cliente': cliente,
-                    'area': area,
-                    'fecha': fecha.strftime('%Y-%m-%d')
-                }
-                
-                # Clasificar
-                resultado = clasificar_ticket(nuevo_ticket)
-                
-                # Guardar
-                if guardar_ticket_procesado(nuevo_ticket, resultado):
-                    st.success("✅ Ticket procesado y guardado exitosamente!")
+        if submitted:
+            if contenido and cliente and area:
+                if normalizar(area) in [normalizar(a) for a in json_areas]:
+                    # Crear el ticket
+                    nuevo_ticket = {
+                        'id_ticket': id_ticket,
+                        'contenido': contenido,
+                        'cliente': cliente,
+                        'area': area,
+                        'fecha': fecha.strftime('%Y-%m-%d')
+                    }
                     
-                    # Mostrar resultado
-                    st.info(f"""
-                    **Clasificación:**
-                    - Tipo: {resultado['tipo']}
-                    - Prioridad: {resultado['prioridad']}
-                    - Asignado a: {resultado['asignado_a']}
-                    - Regla aplicada: {resultado['regla']}
-                    """)
+                    # Clasificar
+                    resultado = clasificar_ticket(nuevo_ticket)
                     
-                    st.balloons()
+                    # Guardar
+                    if guardar_ticket_procesado(nuevo_ticket, resultado):
+                        st.success("✅ Ticket procesado y guardado exitosamente!")
+                        
+                        # Mostrar resultado
+                        st.info(f"""
+                        **Clasificación:**
+                        - Tipo: {resultado['tipo']}
+                        - Prioridad: {resultado['prioridad']}
+                        - Asignado a: {resultado['asignado_a']}
+                        - Regla aplicada: {resultado['regla']}
+                        """)
+                        
+                        st.balloons()
+                else:
+                    st.error("Área no reconocida. Por favor ingrese un área dentro de la lista mostrada.")
             else:
                 st.error("Por favor completa todos los campos")
+
+    st.divider() 
+    st.subheader("Áreas de la Empresa")
+    st.text("   Las áreas disponibles son:")
+    for i in range(len(json_areas)):
+        st.write(f"{i + 1}. {json_areas[i]}")
 
 # OPCIÓN 3: Estadísticas
 
@@ -337,6 +361,11 @@ elif opcion == "⚙️ Configuración":
     # Agregar nueva regla (simplificado)
     st.subheader("➕ Agregar Nueva Regla")
     st.info("Función en desarrollo - Próximamente podrás agregar reglas personalizadas")
+
+# OPCIÓN 5: Tests
+elif opcion == "🧐 Tests":
+    from ui.test_app import mostrar_pagina_pruebas
+    mostrar_pagina_pruebas()
 
 # Footer
 st.markdown("---")

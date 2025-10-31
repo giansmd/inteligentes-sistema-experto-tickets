@@ -1,0 +1,14 @@
+{
+  "areas": [
+        {"id_area": "A001", "nombre": "Recursos Humanos"},
+        {"id_area": "A002", "nombre": "Contabilidad"},
+        {"id_area": "A003", "nombre": "Ingeniería"},
+        {"id_area": "A004", "nombre": "Logística"},
+        {"id_area": "A005", "nombre": "Ventas"},
+        {"id_area": "A006", "nombre": "Marketing"},
+        {"id_area": "A007", "nombre": "Administración"},
+        {"id_area": "A008", "nombre": "Recursos Humanos"},
+        {"id_area": "A009", "nombre": "IT"},
+        {"id_area": "A010", "nombre": "Finanzas"}
+    ]
+}
