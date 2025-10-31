@@ -33,8 +33,18 @@ class TicketClassificationEngine(KnowledgeEngine):
                 contenido = str(fact.get('contenido', '')).lower()
                 break
 
+        # Verificar que el contenido no esté vacío
+        if not contenido or contenido.isspace():
+          self.resultados.append({
+            'regla': 'Error: Contenido vacío',
+            'tipo': 'ERROR',
+            'prioridad': 'Baja',
+            'asignado_a': 'Sin asignar'
+          })
+          return
+
         # Regla: Seguridad informática - Malware / Phishing (Prioridad Alta)
-        if any(palabra in contenido for palabra in ['virus', 'malware', 'ransomware', 'phishing', 'phising', 'adjunto sospechoso', 'suplantación']):
+        elifany(palabra in contenido for palabra in ['virus', 'malware', 'ransomware', 'phishing', 'phising', 'adjunto sospechoso', 'suplantación']):
             self.resultados.append({
               'regla': 'Regla: Incidente de Seguridad',
               'tipo': 'SEGURIDAD',
