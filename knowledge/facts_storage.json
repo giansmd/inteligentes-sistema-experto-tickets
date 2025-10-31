@@ -179,6 +179,30 @@
       "prioridad": "Alta",
       "asignado_a": "Equipo de Redes",
       "fecha_procesamiento": "2025-10-29 23:30:17"
+    },
+    {
+      "id_ticket": "TK20251030231528",
+      "contenido": " ",
+      "cliente": "Gian",
+      "area": "RRHH",
+      "fecha": "2025-10-30",
+      "regla": "Sin clasificar",
+      "tipo": "GENERAL",
+      "prioridad": "Baja",
+      "asignado_a": "Revisar manualmente",
+      "fecha_procesamiento": "2025-10-30 23:15:28"
+    },
+    {
+      "id_ticket": "TK20251030231709",
+      "contenido": "Tengo un virus en mi pc",
+      "cliente": "Gian",
+      "area": "RRHH",
+      "fecha": "2025-10-30",
+      "regla": "Regla: Incidente de Seguridad",
+      "tipo": "SISTEMA",
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Seguridad Informática",
+      "fecha_procesamiento": "2025-10-30 23:17:09"
     }
   ]
 }

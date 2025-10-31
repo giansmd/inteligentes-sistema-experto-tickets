@@ -189,7 +189,8 @@ elif opcion == "➕ Nuevo Ticket":
         submitted = st.form_submit_button("🚀 Procesar Ticket")
         
         if submitted:
-            if contenido and cliente and area:
+
+            if contenido.strip() and cliente and area:
                 # Crear el ticket
                 nuevo_ticket = {
                     'id_ticket': id_ticket,

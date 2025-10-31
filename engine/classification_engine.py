@@ -32,104 +32,164 @@ class TicketClassificationEngine(KnowledgeEngine):
             if isinstance(fact, Ticket):
                 contenido = str(fact.get('contenido', '')).lower()
                 break
-        
-        # Regla 9: Equipo lento - Prioridad Media (PRIORIDAD ALTA en el orden)
-        if any(palabra in contenido for palabra in ['lento', 'lenta', 'lentos', 'lentas', 'demora', 'tarda', 'rendimiento', 'optimizar']):
+
+        # Verificar que el contenido no esté vacío
+        if not contenido or contenido.isspace():
+          self.resultados.append({
+            'regla': 'Error: Contenido vacío',
+            'tipo': 'ERROR',
+            'prioridad': 'Baja',
+            'asignado_a': 'Sin asignar'
+          })
+          return
+
+        # Regla: Seguridad informática - Malware / Phishing (Prioridad Alta)
+        elifany(palabra in contenido for palabra in ['virus', 'malware', 'ransomware', 'phishing', 'phising', 'adjunto sospechoso', 'suplantación']):
             self.resultados.append({
-                'regla': 'Regla 9: Equipo Lento',
-                'tipo': 'PC/LAPTOP',
-                'prioridad': 'Media',
-                'asignado_a': 'Equipo de Mantenimiento'
+              'regla': 'Regla: Incidente de Seguridad',
+              'tipo': 'SEGURIDAD',
+              'prioridad': 'Alta',
+              'asignado_a': 'Equipo de Seguridad'
             })
             return
-        
-        # Regla 6: Equipo no enciende - Prioridad Alta
+
+        # Regla: Pérdida de datos / Recuperación (Prioridad Alta)
+        elif any(palabra in contenido for palabra in ['perdí', 'perdida', 'archivo eliminado', 'no encuentro', 'restaurar', 'recuperar', 'backup perdido', 'datos borrados']):
+            self.resultados.append({
+              'regla': 'Regla: Recuperación de Datos',
+              'tipo': 'SOFTWARE',
+              'prioridad': 'Alta',
+              'asignado_a': 'Equipo de Software'
+            })
+            return
+
+        # Regla: ERP / Finanzas / Contabilidad (Prioridad Alta)
+        elif any(palabra in contenido for palabra in ['erp', 'contabilidad', 'facturación', 'finanzas', 'nomina', 'siga', 'siaf', 'sistema contable']):
+            self.resultados.append({
+              'regla': 'Regla: Sistema ERP/Finanzas',
+              'tipo': 'SOFTWARE',
+              'prioridad': 'Alta',
+              'asignado_a': 'Equipo de Software'
+            })
+            return
+
+        # Regla: VPN / Acceso remoto (Prioridad Alta)
+        elif any(palabra in contenido for palabra in ['vpn', 'acceso remoto', 'escritorio remoto', 'teamviewer', 'conexión remota', 'remote desktop']):
+            self.resultados.append({
+              'regla': 'Regla: Acceso Remoto / VPN',
+              'tipo': 'REDES',
+              'prioridad': 'Alta',
+              'asignado_a': 'Equipo de Redes'
+            })
+            return
+
+        # Regla: Equipo no enciende - Prioridad Alta
         elif any(palabra in contenido for palabra in ['no enciende', 'no prende', 'pantalla negra', 'no inicia']):
             self.resultados.append({
-                'regla': 'Regla 6: Equipo No Enciende',
-                'tipo': 'PC/LAPTOP',
+                'regla': 'Regla: Equipo No Enciende',
+                'tipo': 'HARDWARE',
                 'prioridad': 'Alta',
-                'asignado_a': 'Equipo de Hardware - Emergencias'
+                'asignado_a': 'Equipo de Hardware'
             })
             return
         
-        # Regla 1: Problemas con impresoras - Prioridad Media
-        elif any(palabra in contenido for palabra in ['impresora', 'toner', 'impresion', 'escaner', 'atasco']):
-            self.resultados.append({
-                'regla': 'Regla 1: Problema de Impresora',
-                'tipo': 'EQUIPOS DE IMPRESIÓN/ESCÁNER',
-                'prioridad': 'Media',
-                'asignado_a': 'Equipo de Hardware - Impresoras'
-            })
-            return
-        
-        # Regla 2: Problemas de red - Prioridad Alta
+        # Regla: Problemas de red - Prioridad Alta
         elif any(palabra in contenido for palabra in ['red', 'internet', 'wifi', 'conexion', 'dominio']):
             self.resultados.append({
-                'regla': 'Regla 2: Problema de Red',
-                'tipo': 'PC/LAPTOP',
+                'regla': 'Regla: Problema de Red',
+                'tipo': 'REDES',
                 'prioridad': 'Alta',
                 'asignado_a': 'Equipo de Redes'
             })
             return
-        
-        # Regla 3: Instalación de software - Prioridad Baja
-        elif any(palabra in contenido for palabra in ['instalacion', 'instalar', 'software', 'programa', 'aplicacion']):
-            self.resultados.append({
-                'regla': 'Regla 3: Instalación de Software',
-                'tipo': 'PC/LAPTOP',
-                'prioridad': 'Baja',
-                'asignado_a': 'Equipo de Soporte - Software'
-            })
-            return
-        
-        # Regla 4: Problemas con sistemas corporativos - Prioridad Alta
+            
+        # Regla: Problemas con sistemas corporativos - Prioridad Alta
         elif any(palabra in contenido for palabra in ['siga', 'siaf', 'sgd', 'sisper', 'sistema', 'intranet']):
             self.resultados.append({
-                'regla': 'Regla 4: Problema de Sistema Corporativo',
-                'tipo': 'SISTEMA',
+                'regla': 'Regla: Problema de Sistema Corporativo',
+                'tipo': 'SOFTWARE',
                 'prioridad': 'Alta',
-                'asignado_a': 'Equipo de Sistemas Corporativos'
+                'asignado_a': 'Equipo de Software'
+            })
+            return
+
+        # Regla: Periféricos (mouse, teclado, monitor, webcam) - Prioridad Media
+        elif any(palabra in contenido for palabra in ['mouse', 'ratón', 'teclado', 'monitor', 'pantalla', 'webcam', 'microfono', 'altavoz', 'parlante']):
+            self.resultados.append({
+              'regla': 'Regla: Problema de Periféricos',
+              'tipo': 'HARDWARE',
+              'prioridad': 'Media',
+              'asignado_a': 'Equipo de Hardware'
+            })
+            return
+
+        # Regla: Equipo lento - Prioridad Media
+        elif any(palabra in contenido for palabra in ['lento', 'lenta', 'lentos', 'lentas', 'demora', 'tarda', 'rendimiento', 'optimizar']):
+            self.resultados.append({
+                'regla': 'Regla: Equipo Lento',
+                'tipo': 'HARDWARE',
+                'prioridad': 'Media',
+                'asignado_a': 'Equipo de Hardware'
             })
             return
         
-        # Regla 5: Problemas de contraseña - Prioridad Media
+        # Regla: Problemas con impresoras - Prioridad Media
+        elif any(palabra in contenido for palabra in ['impresora', 'toner', 'impresion', 'escaner', 'atasco']):
+            self.resultados.append({
+                'regla': 'Regla: Problema de Impresora',
+                'tipo': 'HARDWARE',
+                'prioridad': 'Media',
+                'asignado_a': 'Equipo de Hardware'
+            })
+            return
+        
+        # Regla: Problemas de contraseña - Prioridad Media
         elif any(palabra in contenido for palabra in ['contraseña', 'password', 'bloqueada', 'expirada', 'restablecimiento']):
             self.resultados.append({
-                'regla': 'Regla 5: Problema de Contraseña',
-                'tipo': 'SISTEMA',
+                'regla': 'Regla: Problema de Contraseña',
+                'tipo': 'SEGURIDAD',
                 'prioridad': 'Media',
-                'asignado_a': 'Equipo de Seguridad y Accesos'
+                'asignado_a': 'Equipo de Seguridad'
             })
             return
         
-        # Regla 7: Correo corporativo - Prioridad Media
+        # Regla: Correo corporativo - Prioridad Media
         elif any(palabra in contenido for palabra in ['correo', 'email', 'gmail', 'outlook', 'corporativo']):
             self.resultados.append({
-                'regla': 'Regla 7: Problema de Correo',
-                'tipo': 'SISTEMA',
+                'regla': 'Regla: Problema de Correo',
+                'tipo': 'SOFTWARE',
                 'prioridad': 'Media',
-                'asignado_a': 'Equipo de Correo y Comunicaciones'
+                'asignado_a': 'Equipo de Software'
             })
             return
         
-        # Regla 8: Asesoría general - Prioridad Baja
+        # Regla: Asesoría general - Prioridad Baja
         elif any(palabra in contenido for palabra in ['asesoria', 'ayuda', 'como', 'consulta', 'duda']):
             self.resultados.append({
-                'regla': 'Regla 8: Asesoría General',
-                'tipo': 'GENERAL',
+                'regla': 'Regla: Asesoría General',
+                'tipo': 'SOFTWARE',
                 'prioridad': 'Baja',
-                'asignado_a': 'Equipo de Asesoría General'
+                'asignado_a': 'Equipo de Software'
             })
             return
         
-        # Regla 10: Habilitaciones y configuraciones - Prioridad Baja
+        # Regla: Habilitaciones y configuraciones - Prioridad Baja
         elif any(palabra in contenido for palabra in ['habilitar', 'configurar', 'activar', 'crear', 'backup']):
             self.resultados.append({
-                'regla': 'Regla 10: Habilitación/Configuración',
-                'tipo': 'GENERAL',
+                'regla': 'Regla: Habilitación/Configuración',
+                'tipo': 'SOFTWARE',
                 'prioridad': 'Baja',
-                'asignado_a': 'Equipo de Configuraciones'
+                'asignado_a': 'Equipo de Software'
+            })
+            return
+        
+        # Regla: Instalación de software - Prioridad Baja
+        elif any(palabra in contenido for palabra in ['instalacion', 'instalar', 'software', 'programa', 'aplicacion']):
+            self.resultados.append({
+                'regla': 'Regla: Instalación de Software',
+                'tipo': 'SOFTWARE',
+                'prioridad': 'Baja',
+                'asignado_a': 'Equipo de Software'
             })
             return
         
@@ -137,9 +197,9 @@ class TicketClassificationEngine(KnowledgeEngine):
         else:
             self.resultados.append({
                 'regla': 'Sin clasificar',
-                'tipo': 'GENERAL',
+                'tipo': 'SOFTWARE',
                 'prioridad': 'Baja',
-                'asignado_a': 'Revisar manualmente'
+                'asignado_a': 'Equipo de Software'
             })
     
     def reset_resultados(self):
