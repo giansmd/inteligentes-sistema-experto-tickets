@@ -12,6 +12,10 @@ import json
 import os
 import sys
 from datetime import datetime
+# Agregar imports en la parte superior
+import plotly.express as px
+import plotly.graph_objects as go
+import pandas as pd
 
 # Agregar el directorio raíz al path de Python
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -216,6 +220,9 @@ elif opcion == "➕ Nuevo Ticket":
                 st.error("Por favor completa todos los campos")
 
 # OPCIÓN 3: Estadísticas
+
+
+# Reemplazar la sección de estadísticas con:
 elif opcion == "📊 Estadísticas":
     st.header("Estadísticas del Sistema")
     
@@ -226,56 +233,102 @@ elif opcion == "📊 Estadísticas":
             tickets = datos.get('tickets_procesados', [])
         
         if tickets:
-            # Contar por categoría
+            # Contadores
             categorias = {}
             prioridades = {}
             equipos = {}
             
             for ticket in tickets:
-                # Por tipo
                 tipo = ticket.get('tipo', 'Sin clasificar')
                 categorias[tipo] = categorias.get(tipo, 0) + 1
-                
-                # Por prioridad
                 prioridad = ticket.get('prioridad', 'Sin prioridad')
                 prioridades[prioridad] = prioridades.get(prioridad, 0) + 1
-                
-                # Por equipo
                 equipo = ticket.get('asignado_a', 'Sin asignar')
                 equipos[equipo] = equipos.get(equipo, 0) + 1
-            
-            # Mostrar estadísticas
+
+            # KPIs principales con animación
             col1, col2, col3 = st.columns(3)
             
             with col1:
-                st.metric("Total de Tickets", len(tickets))
-            
+                cuenta = len(tickets)
+                st.write("### 📊 Total Tickets")
+                st.markdown(f"""
+                <div style='text-align: center; animation: grow 1s ease-out;'>
+                    <h1 style='font-size: 3em; color: #1f77b4;'>{cuenta}</h1>
+                </div>
+                """, unsafe_allow_html=True)
+
             with col2:
-                st.metric("Tickets Alta Prioridad", prioridades.get('Alta', 0))
-            
+                alta_prioridad = prioridades.get('Alta', 0)
+                porcentaje = (alta_prioridad / cuenta) * 100
+                st.write("### 🚨 Alta Prioridad")
+                st.markdown(f"""
+                <div style='text-align: center; animation: grow 1s ease-out;'>
+                    <h1 style='font-size: 3em; color: #ff4b4b;'>{alta_prioridad}</h1>
+                    <p>({porcentaje:.1f}%)</p>
+                </div>
+                """, unsafe_allow_html=True)
+
             with col3:
-                st.metric("Tipos de Categorías", len(categorias))
-            
+                st.write("### 📑 Categorías")
+                st.markdown(f"""
+                <div style='text-align: center; animation: grow 1s ease-out;'>
+                    <h1 style='font-size: 3em; color: #50af50;'>{len(categorias)}</h1>
+                </div>
+                """, unsafe_allow_html=True)
+
             st.markdown("---")
+
+            # Gráfico de barras para tipos de ticket
+            df_tipos = pd.DataFrame(list(categorias.items()), columns=['Tipo', 'Cantidad'])
+            fig_tipos = px.bar(df_tipos, x='Tipo', y='Cantidad',
+                             title='Distribución por Tipo de Ticket',
+                             color='Cantidad',
+                             color_continuous_scale='Viridis')
+            st.plotly_chart(fig_tipos, use_container_width=True)
+
+            # Gráfico circular para prioridades
+            df_prioridades = pd.DataFrame(list(prioridades.items()), columns=['Prioridad', 'Cantidad'])
+            fig_prioridades = px.pie(df_prioridades, values='Cantidad', names='Prioridad',
+                                   title='Distribución por Prioridad',
+                                   hole=0.3,
+                                   color_discrete_sequence=px.colors.sequential.RdBu)
+            st.plotly_chart(fig_prioridades, use_container_width=True)
+
+            # Contadores por categoría en grid de 3x3
+            st.markdown("### 📊 Desglose por Categoría")
+            categorias_sorted = sorted(categorias.items(), key=lambda x: x[1], reverse=True)
             
-            # Gráficos
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                st.subheader("📊 Tickets por Tipo")
-                for tipo, cantidad in categorias.items():
-                    st.write(f"**{tipo}:** {cantidad} tickets")
-            
-            with col2:
-                st.subheader("⚡ Tickets por Prioridad")
-                for prioridad, cantidad in prioridades.items():
-                    st.write(f"**{prioridad}:** {cantidad} tickets")
-            
-            st.markdown("---")
-            st.subheader("👥 Tickets por Equipo Asignado")
-            for equipo, cantidad in equipos.items():
-                st.write(f"**{equipo}:** {cantidad} tickets")
-        
+            for i in range(0, len(categorias_sorted), 2):
+                cols = st.columns(2)
+                for j in range(2):
+                    if i + j < len(categorias_sorted):
+                        cat, count = categorias_sorted[i + j]
+                        with cols[j]:
+                            st.markdown(f"""
+                            <div style='background-color: #f0f2f8; padding: 1rem; border-radius: 10px; text-align: center; margin-bottom: 1rem; animation: grow 1s ease-out;'>
+                                <h4>{cat}</h4>
+                                <div style='font-size: 2em; color: #1f77b4;'>{count}</div>
+                                <div style='font-size: 0.8em; color: #666;'>tickets</div>
+                            </div>
+                            """, unsafe_allow_html=True)
+
+            # Agregar CSS para animaciones
+            st.markdown("""
+            <style>
+            @keyframes grow {
+                from {
+                    transform: scale(0);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
         else:
             st.info("No hay datos para mostrar estadísticas")
     

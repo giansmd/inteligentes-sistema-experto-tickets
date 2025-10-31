@@ -1,3 +1,5 @@
 experta
 streamlit
 pytest
+plotly
+pandas
