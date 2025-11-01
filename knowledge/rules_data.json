@@ -1,74 +1,139 @@
 {
   "reglas_personalizadas": [
     {
-      "id_regla": "R01",
-      "nombre": "Problemas de Impresora",
-      "palabras_clave": [
-        "impresora",
-        "toner",
-        "impresion",
-        "escaner",
-        "atasco"
-      ],
-      "tipo": "EQUIPOS DE IMPRESIÓN/ESCÁNER",
-      "prioridad": "Media",
-      "asignado_a": "Equipo de Hardware - Impresoras",
-      "activa": true,
-      "fecha_creacion": "2025-11-01 10:00:00"
+      "id_regla": "TCE-01",
+      "nombre": "Incidente de Seguridad (Malware/Phishing)",
+      "palabras_clave": ["virus", "malware", "ransomware", "phishing", "phising", "adjunto sospechoso", "suplantación"],
+      "tipo": "SEGURIDAD",
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Seguridad",
+      "activa": true
     },
     {
-      "id_regla": "R02",
-      "nombre": "Problemas de Red",
-      "palabras_clave": [
-        "red",
-        "internet",
-        "wifi",
-        "conexion",
-        "dominio"
-      ],
+      "id_regla": "TCE-02",
+      "nombre": "Recuperación de Datos",
+      "palabras_clave": ["perdí", "perdida", "archivo eliminado", "no encuentro", "restaurar", "recuperar", "backup perdido", "datos borrados"],
+      "tipo": "SOFTWARE",
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Software",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-03",
+      "nombre": "Sistema ERP/Finanzas",
+      "palabras_clave": ["erp", "contabilidad", "facturación", "finanzas", "nomina", "siga", "siaf", "sistema contable"],
+      "tipo": "SOFTWARE",
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Software",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-04",
+      "nombre": "Acceso Remoto / VPN",
+      "palabras_clave": ["vpn", "acceso remoto", "escritorio remoto", "teamviewer", "conexión remota", "remote desktop"],
       "tipo": "REDES",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Redes",
-      "activa": true,
-      "fecha_creacion": "2025-11-01 10:05:00"
+      "activa": true
     },
     {
-      "id_regla": "R03",
-      "nombre": "Problemas de Licencias de Software",
-      "palabras_clave": [
-        "licencia",
-        "activacion",
-        "vencida",
-        "key",
-        "serial"
-      ],
+      "id_regla": "TCE-05",
+      "nombre": "Equipo No Enciende",
+      "palabras_clave": ["no enciende", "no prende", "pantalla negra", "no inicia"],
+      "tipo": "HARDWARE",
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Hardware",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-06",
+      "nombre": "Problema de Red",
+      "palabras_clave": ["red", "internet", "wifi", "conexion", "dominio"],
+      "tipo": "REDES",
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Redes",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-07",
+      "nombre": "Problema de Sistema Corporativo",
+      "palabras_clave": ["siga", "siaf", "sgd", "sisper", "sistema", "intranet"],
       "tipo": "SOFTWARE",
-      "prioridad": "Media",
-      "asignado_a": "Equipo de Software - Licencias",
-      "activa": true,
-      "fecha_creacion": "2025-11-01 10:10:00"
+      "prioridad": "Alta",
+      "asignado_a": "Equipo de Software",
+      "activa": true
     },
     {
-      "id_regla": "R04",
-      "nombre": "Problemas de Audio",
-      "palabras_clave": [
-        "audio",
-        "sonido",
-        "parlantes",
-        "microfono",
-        "altavoz",
-        "audifono",
-        "auricular",
-        "bocina",
-        "micrófono",
-        "audífono"
-      ],
+      "id_regla": "TCE-08",
+      "nombre": "Problema de Periféricos",
+      "palabras_clave": ["mouse", "ratón", "teclado", "monitor", "pantalla", "webcam", "microfono", "altavoz", "parlante"],
       "tipo": "HARDWARE",
       "prioridad": "Media",
-      "asignado_a": "Equipo de Hardware - Periféricos",
-      "activa": true,
-      "fecha_creacion": "2025-11-01 13:36:49",
-      "fecha_modificacion": "2025-11-01 13:38:20"
+      "asignado_a": "Equipo de Hardware",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-09",
+      "nombre": "Equipo Lento",
+      "palabras_clave": ["lento", "lenta", "lentos", "lentas", "demora", "tarda", "rendimiento", "optimizar"],
+      "tipo": "HARDWARE",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Hardware",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-10",
+      "nombre": "Problema de Impresora",
+      "palabras_clave": ["impresora", "toner", "impresion", "escaner", "atasco"],
+      "tipo": "HARDWARE",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Hardware",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-11",
+      "nombre": "Problema de Contraseña",
+      "palabras_clave": ["contraseña", "password", "bloqueada", "expirada", "restablecimiento"],
+      "tipo": "SEGURIDAD",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Seguridad",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-12",
+      "nombre": "Problema de Correo",
+      "palabras_clave": ["correo", "email", "gmail", "outlook", "corporativo"],
+      "tipo": "SOFTWARE",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Software",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-13",
+      "nombre": "Asesoría General",
+      "palabras_clave": ["asesoria", "ayuda", "como", "consulta", "duda"],
+      "tipo": "SOFTWARE",
+      "prioridad": "Baja",
+      "asignado_a": "Equipo de Software",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-14",
+      "nombre": "Habilitación/Configuración",
+      "palabras_clave": ["habilitar", "configurar", "activar", "crear", "backup"],
+      "tipo": "SOFTWARE",
+      "prioridad": "Baja",
+      "asignado_a": "Equipo de Software",
+      "activa": true
+    },
+    {
+      "id_regla": "TCE-15",
+      "nombre": "Instalación de Software",
+      "palabras_clave": ["instalacion", "instalar", "software", "programa", "aplicacion"],
+      "tipo": "SOFTWARE",
+      "prioridad": "Baja",
+      "asignado_a": "Equipo de Software",
+      "activa": true
     }
   ]
 }
