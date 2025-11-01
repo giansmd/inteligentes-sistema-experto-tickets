@@ -216,7 +216,7 @@ def mostrar_estadisticas():
                     fin_pdf = st.date_input("Hasta:", value=df_filtrado["fecha"].max().date())
 
                 # Seleccionar gráficos a incluir
-                opciones_graficos = ["Tipo", "Prioridad", "Área", "Cliente", "Asignado a", "Regla aplicada"]
+                opciones_graficos = ["Tipo", "Prioridad", "Área", "Cliente", "Asignado a", "Regla"]
                 graficos_seleccionados = st.multiselect(
                     "Selecciona los gráficos que deseas incluir en el informe:",
                     opciones_graficos,
@@ -338,12 +338,6 @@ def generar_informe_pdf(df_filtrado, graficos_seleccionados, inicio, fin):
 
     # Convertir DataFrame en lista de listas
     data = [list(df_filtrado.columns)] + df_filtrado.astype(str).values.tolist()
-
-    # --- Ajustar texto largo ---
-    def wrap_text(text, max_chars=35):
-        if not isinstance(text, str):
-            text = str(text)
-        return "<br/>".join(textwrap.wrap(text, width=max_chars))
 
     # Aplicar a todas las celdas menos la cabecera
     for i in range(1, len(data)):
