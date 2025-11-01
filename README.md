@@ -14,17 +14,26 @@ Este sistema experto analiza el texto de tickets de soporte y automáticamente:
 
 ```
 sistema-experto-tickets/
-├── engine/                     # Motor de inferencia
-│   └── inference_engine.py    # Lógica de procesamiento
-├── knowledge/                  # Base de conocimiento
-│   └── rules.py               # Reglas y palabras clave
-├── ui/                        # Interfaz de usuario
-│   ├── main_app.py           # Página principal
-│   └── test_app.py           # Página de pruebas
-├── tests/                     # Pruebas automatizadas
-│   └── test_rules.py         # Tests con pytest
-├── app.py                     # Punto de entrada
-└── requirements.txt           # Dependencias
+├── engine/                          # Motor de inferencia
+│   ├── classification_engine.py    # Motor de clasificación con reglas
+│   ├── rules_manager.py            # Gestor CRUD de reglas [NUEVO]
+│   └── ticket_fact.py              # Definición de hechos
+├── knowledge/                       # Base de conocimiento
+│   ├── rules_data.json             # Reglas personalizadas en JSON [NUEVO]
+│   ├── facts_storage.json          # Almacenamiento de tickets procesados
+│   └── areas_empresa.json          # Áreas de la empresa
+├── ui/                              # Interfaz de usuario
+│   ├── app.py                      # Aplicación principal Streamlit
+│   ├── main_app.py                 # Página de inicio
+│   ├── gestion_reglas.py           # Interfaz de gestión de reglas [NUEVO]
+│   ├── estadisticas.py             # Dashboard de estadísticas
+│   └── test_app.py                 # Página de pruebas
+├── tests/                           # Pruebas automatizadas
+│   ├── test_rules.py               # Tests de reglas
+│   ├── test_rules_manager.py       # Tests del gestor de reglas [NUEVO]
+│   └── default_tickets.json        # Tickets de ejemplo
+├── FEATURE_GESTION_REGLAS.md       # Documentación de gestión de reglas [NUEVO]
+└── requirements.txt                # Dependencias
 ```
 
 ## 🚀 Instalación y Uso
@@ -72,6 +81,7 @@ El sistema implementa 10 reglas principales:
 - 💻 **Software**: programa, aplicación, Office, navegador, etc.
 - 🌐 **Redes**: internet, wifi, conexión, router, etc.
 - 🔒 **Seguridad**: virus, contraseña, hackeo, antivirus, etc.
+- 🖨️ **Equipos de Impresión/Escáner**: impresoras, escáneres, tóner
 
 ### Tipos
 - 🚨 **Incidencia**: Problemas que requieren solución
@@ -81,6 +91,15 @@ El sistema implementa 10 reglas principales:
 - 🔴 **Alta**: Requiere atención inmediata (palabras como "urgente", "crítico")
 - 🟡 **Media**: Incidencias normales (24-48 horas)
 - 🟢 **Baja**: Solicitudes de información (no urgente)
+
+### 🆕 Sistema de Reglas Dinámicas (v2.0)
+- ✅ **Gestión visual de reglas**: Crear, editar y eliminar reglas desde la interfaz
+- ✅ **Reglas en JSON**: Sin necesidad de modificar código Python
+- ✅ **Prioridad configurable**: Las reglas personalizadas tienen precedencia
+- ✅ **Activación/Desactivación**: Control del estado de cada regla
+- ✅ **Estadísticas y gráficos**: Visualización de distribución de reglas
+- ✅ **Filtros avanzados**: Por estado, tipo y prioridad
+- ✅ **Auditoría**: Fechas de creación y modificación
 
 ## 🧪 Casos de Prueba
 
@@ -105,6 +124,16 @@ Puedes probarlos en la página de **Pruebas** de la aplicación.
 - Obtener acción recomendada
 - Ver análisis de palabras clave
 - Estadísticas de tickets procesados
+
+### Página de Configuración ⚙️ **[NUEVO]**
+- **Gestión Dinámica de Reglas**: Sistema completo para crear, editar y eliminar reglas sin modificar código
+- **Ver Reglas**: Visualización con filtros por estado, tipo y prioridad
+- **Agregar Reglas**: Formulario para crear reglas personalizadas con palabras clave
+- **Editar Reglas**: Modificar reglas existentes
+- **Estadísticas**: Gráficos de distribución de reglas
+- **Activar/Desactivar**: Control del estado de cada regla
+
+> 📖 **Documentación completa**: Ver [FEATURE_GESTION_REGLAS.md](FEATURE_GESTION_REGLAS.md) para detalles técnicos
 
 ### Página de Pruebas
 - Probar con casos predefinidos
@@ -174,13 +203,41 @@ Este MVP demuestra:
 - ✅ Pruebas automatizadas
 - ✅ Documentación completa
 
-## 🔮 Próximas Mejoras (No implementadas aún)
+## ✨ Novedades - Versión 2.0
 
-- [ ] Más reglas (actualmente 10 básicas)
-- [ ] Machine Learning para mejorar clasificación
-- [ ] Historial persistente (base de datos)
-- [ ] Exportar reportes
-- [ ] API REST
+### 🎉 Gestión Dinámica de Reglas
+El sistema ahora permite gestionar reglas de clasificación sin modificar código:
+
+```json
+{
+  "id_regla": "R01",
+  "nombre": "Problemas de Impresora",
+  "palabras_clave": ["impresora", "toner", "escaner"],
+  "tipo": "EQUIPOS DE IMPRESIÓN/ESCÁNER",
+  "prioridad": "Media",
+  "asignado_a": "Equipo de Hardware - Impresoras",
+  "activa": true
+}
+```
+
+**Características:**
+- 🔧 Crear reglas personalizadas desde la interfaz
+- ✏️ Editar reglas existentes
+- 🗑️ Eliminar reglas obsoletas  
+- 🔄 Activar/desactivar reglas según necesidad
+- 📊 Ver estadísticas con gráficos interactivos
+- 🎯 Las reglas personalizadas tienen prioridad sobre las hardcodeadas
+
+Ver documentación completa en [FEATURE_GESTION_REGLAS.md](FEATURE_GESTION_REGLAS.md)
+
+## 🔮 Próximas Mejoras
+
+- [ ] Importar/Exportar reglas en formato CSV
+- [ ] Historial de cambios en reglas
+- [ ] Reglas con condiciones múltiples (AND/OR)
+- [ ] Machine Learning para sugerir nuevas reglas
+- [ ] Validación de conflictos entre reglas
+- [ ] API REST para gestión de reglas
 - [ ] Integración con sistemas de tickets reales
 - [ ] Múltiples idiomas
 
@@ -201,6 +258,17 @@ Este es un proyecto educativo. Para agregar nuevas reglas o mejorar el sistema, 
 
 ---
 
-**Versión:** 1.0 (MVP)  
+## 📚 Documentación Adicional
+
+- **[FEATURE_GESTION_REGLAS.md](FEATURE_GESTION_REGLAS.md)**: Documentación técnica completa del sistema de gestión de reglas dinámicas
+  - Arquitectura del módulo RulesManager
+  - Guía de uso de la interfaz
+  - Ejemplos de pruebas
+  - Troubleshooting
+
+---
+
+**Versión:** 2.0  
 **Autor:** Sistema experto educativo  
-**Fecha:** 2025
+**Fecha:** Noviembre 2025  
+**Rama actual:** `feature/gestion-reglas`

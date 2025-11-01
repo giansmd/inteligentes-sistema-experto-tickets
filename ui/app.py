@@ -331,36 +331,10 @@ elif opcion == "📈 Estadísticas":
     st.header("Estadísticas del Sistema")
     mostrar_estadisticas()
 
-# OPCIÓN 4: Configuración
+# OPCIÓN 4: Configuración - Gestión de Reglas
 elif opcion == "⚙️ Configuración":
-    st.header("Configuración del Sistema")
-    
-    st.subheader("🔧 Gestión de Reglas")
-    
-    # Mostrar reglas actuales
-    try:
-        ruta = os.path.join(os.path.dirname(__file__), '..', 'knowledge', 'rules_data.json')
-        with open(ruta, 'r', encoding='utf-8') as f:
-            reglas_data = json.load(f)
-            reglas = reglas_data.get('reglas_personalizadas', [])
-        
-        for regla in reglas:
-            with st.expander(f"📌 {regla['nombre']}"):
-                st.write(f"**ID:** {regla['id_regla']}")
-                st.write(f"**Palabras clave:** {', '.join(regla['palabras_clave'])}")
-                st.write(f"**Tipo:** {regla['tipo']}")
-                st.write(f"**Prioridad:** {regla['prioridad']}")
-                st.write(f"**Asignar a:** {regla['asignado_a']}")
-                st.write(f"**Estado:** {'✅ Activa' if regla['activa'] else '❌ Inactiva'}")
-    
-    except Exception as e:
-        st.error(f"Error al cargar reglas: {e}")
-    
-    st.markdown("---")
-    
-    # Agregar nueva regla (simplificado)
-    st.subheader("➕ Agregar Nueva Regla")
-    st.info("Función en desarrollo - Próximamente podrás agregar reglas personalizadas")
+    from ui.gestion_reglas import mostrar_gestion_reglas
+    mostrar_gestion_reglas()
 
 # OPCIÓN 5: Tests
 elif opcion == "🧐 Tests":

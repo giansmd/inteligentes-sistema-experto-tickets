@@ -3,20 +3,72 @@
     {
       "id_regla": "R01",
       "nombre": "Problemas de Impresora",
-      "palabras_clave": ["impresora", "toner", "impresion", "escaner", "atasco"],
+      "palabras_clave": [
+        "impresora",
+        "toner",
+        "impresion",
+        "escaner",
+        "atasco"
+      ],
       "tipo": "EQUIPOS DE IMPRESIÓN/ESCÁNER",
       "prioridad": "Media",
       "asignado_a": "Equipo de Hardware - Impresoras",
-      "activa": true
+      "activa": true,
+      "fecha_creacion": "2025-11-01 10:00:00"
     },
     {
       "id_regla": "R02",
       "nombre": "Problemas de Red",
-      "palabras_clave": ["red", "internet", "wifi", "conexion", "dominio"],
-      "tipo": "PC/LAPTOP",
+      "palabras_clave": [
+        "red",
+        "internet",
+        "wifi",
+        "conexion",
+        "dominio"
+      ],
+      "tipo": "REDES",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Redes",
-      "activa": true
+      "activa": true,
+      "fecha_creacion": "2025-11-01 10:05:00"
+    },
+    {
+      "id_regla": "R03",
+      "nombre": "Problemas de Licencias de Software",
+      "palabras_clave": [
+        "licencia",
+        "activacion",
+        "vencida",
+        "key",
+        "serial"
+      ],
+      "tipo": "SOFTWARE",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Software - Licencias",
+      "activa": true,
+      "fecha_creacion": "2025-11-01 10:10:00"
+    },
+    {
+      "id_regla": "R04",
+      "nombre": "Problemas de Audio",
+      "palabras_clave": [
+        "audio",
+        "sonido",
+        "parlantes",
+        "microfono",
+        "altavoz",
+        "audifono",
+        "auricular",
+        "bocina",
+        "micrófono",
+        "audífono"
+      ],
+      "tipo": "HARDWARE",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Hardware - Periféricos",
+      "activa": true,
+      "fecha_creacion": "2025-11-01 13:36:49",
+      "fecha_modificacion": "2025-11-01 13:38:20"
     }
   ]
 }

@@ -215,6 +215,42 @@
       "prioridad": "Baja",
       "asignado_a": "Equipo de Software",
       "fecha_procesamiento": "2025-10-31 09:09:45"
+    },
+    {
+      "id_ticket": "TK20251101133737",
+      "contenido": "El micrófono no funciona ",
+      "cliente": "Diego Cuba",
+      "area": "Marketing",
+      "fecha": "2025-11-01",
+      "regla": "Sin clasificar",
+      "tipo": "SOFTWARE",
+      "prioridad": "Baja",
+      "asignado_a": "Equipo de Software",
+      "fecha_procesamiento": "2025-11-01 13:37:37"
+    },
+    {
+      "id_ticket": "TK20251101133745",
+      "contenido": "El microfono no funciona ",
+      "cliente": "Diego Cuba",
+      "area": "Marketing",
+      "fecha": "2025-11-01",
+      "regla": "Regla Personalizada: Problemas de Audio (R04)",
+      "tipo": "HARDWARE",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Hardware - Periféricos",
+      "fecha_procesamiento": "2025-11-01 13:37:45"
+    },
+    {
+      "id_ticket": "TK20251101133839",
+      "contenido": "El micrófono no funciona",
+      "cliente": "Diego Cuba",
+      "area": "Marketing",
+      "fecha": "2025-11-01",
+      "regla": "Regla Personalizada: Problemas de Audio (R04)",
+      "tipo": "HARDWARE",
+      "prioridad": "Media",
+      "asignado_a": "Equipo de Hardware - Periféricos",
+      "fecha_procesamiento": "2025-11-01 13:38:39"
     }
   ]
 }
