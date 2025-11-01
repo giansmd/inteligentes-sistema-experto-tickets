@@ -49,9 +49,9 @@ def mostrar_pagina_pruebas():
         
         with col2:
             st.markdown("**Resultado esperado:**")
-            st.write(f"📝 Tipo: EQUIPOS DE IMPRESIÓN/ESCÁNER")
+            st.write(f"📝 Tipo: HARDWARE")
             st.write(f"⚡ Prioridad: Media")
-            st.write(f"⚡ Asignado a: Equipo de Hardware - Impresoras")
+            st.write(f"⚡ Asignado a: Equipo de Hardware")
         
         st.divider()
         
@@ -78,9 +78,9 @@ def mostrar_pagina_pruebas():
                 col1, col2, col3 = st.columns(3)
 
                 if resultado:  # primero verifica que no esté vacío
-                    correcto_tipo = resultado[0]["tipo"] == "EQUIPOS DE IMPRESIÓN/ESCÁNER"
+                    correcto_tipo = resultado[0]["tipo"] == "HARDWARE"
                     correcto_prio = resultado[0]["prioridad"].lower() == "media"
-                    correcto_asig = resultado[0]["asignado_a"] == "Equipo de Hardware - Impresoras"
+                    correcto_asig = resultado[0]["asignado_a"] == "Equipo de Hardware"
                 with col1:
                     emoji = "✅" if correcto_tipo else "❌"
                     st.metric(
@@ -98,7 +98,7 @@ def mostrar_pagina_pruebas():
                     )
                 
                 with col3:
-                    emoji = "✅" if correcto_prio else "❌"
+                    emoji = "✅" if correcto_asig else "❌"
                     st.metric(
                         "Prioridad",
                         f"{emoji} {resultado[0]["asignado_a"]}",
@@ -142,7 +142,7 @@ def mostrar_pagina_pruebas():
         
         with col2:
             st.markdown("**Resultado esperado:**")
-            st.write(f"📝 Tipo: EQUIPOS DE IMPRESIÓN/ESCÁNER")
+            st.write(f"Error: Contenido vacío")
         
         if st.button("Realizar test de caso borde", type="primary"):
             with st.spinner("Procesando..."):
