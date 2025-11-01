@@ -1,13 +1,15 @@
-# 📊 pages/estadisticas.py
-import streamlit as st
-import os, json
-import pandas as pd
-import plotly.express as px
+# 📊 ui/estadisticas.py
+
+#BIBLIOTECAS A UTILIZAR
+import streamlit as st # Interfaz de usuario
+import os, json # Manejo de archivos y JSON
+import pandas as pd # Manipulación de datos
+import plotly.express as px # Visualización de datos de forma más dinámica, este es el modulo simplificado de plotly
 
 def mostrar_estadisticas():
-    st.header("Estadísticas del Sistema")
-    
+    #PARTE 1
     try:
+        os.environ["PATH"] += os.pathsep + "/usr/bin"
         ruta = os.path.join(os.path.dirname(__file__), '..', 'knowledge', 'facts_storage.json')
         with open(ruta, 'r', encoding='utf-8') as f:
             datos = json.load(f)
@@ -137,12 +139,23 @@ def mostrar_estadisticas():
             else:
                 df_filtrado = df_tickets.copy()
 
-            # Filtro secundario
             if filtro_secundario != "Ninguno":
-                opciones_filtro = ["Todos"] + sorted(df_filtrado[filtro_secundario.lower().replace(" ", "_")].dropna().unique())
-                seleccion_filtro = st.selectbox(f"Selecciona {filtro_secundario}:", opciones_filtro)
-                if seleccion_filtro != "Todos":
-                    df_filtrado = df_filtrado[df_filtrado[filtro_secundario.lower().replace(" ", "_")] == seleccion_filtro]
+                # Filtro secundario
+                mapeo_filtros = {
+                    "Prioridad": "prioridad",
+                    "Área": "area",
+                    "Asignado a": "asignado_a",
+                    "Cliente": "cliente"
+                }
+                columna_filtro = mapeo_filtros.get(filtro_secundario, filtro_secundario.lower().replace(" ", "_"))
+                
+                if columna_filtro in df_filtrado.columns:
+                    opciones_filtro = ["Todos"] + sorted(df_filtrado[columna_filtro].dropna().unique())
+                    seleccion_filtro = st.selectbox(f"Selecciona {filtro_secundario}:", opciones_filtro)
+                    if seleccion_filtro != "Todos":
+                        df_filtrado = df_filtrado[df_filtrado[columna_filtro] == seleccion_filtro]
+                else:
+                    st.warning(f"No se encontró la columna correspondiente a '{filtro_secundario}'.")
 
             # --- AGRUPACIÓN ---
             # Normalizar nombres de columnas sin tildes
@@ -228,9 +241,6 @@ def mostrar_estadisticas():
                             mime="application/pdf"
                         )
 
-
-
-
             # CSS animación
             st.markdown("""
             <style>
@@ -248,25 +258,23 @@ def mostrar_estadisticas():
         st.error(f"Error al cargar estadísticas: {e}")
 
 
-from reportlab.lib.pagesizes import letter
+
+# FUNCIONES AUXILIARES PARA INFORME PDF °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°
+
+
+from reportlab.lib.pagesizes import letter # Tamaño carta
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 import io
-import plotly.express as px
-import pandas as pd
 import tempfile
-import os
 import textwrap
 from reportlab.lib.styles import ParagraphStyle
 def generar_informe_pdf(df_filtrado, graficos_seleccionados, inicio, fin):
     """Genera el informe ejecutivo PDF con los gráficos seleccionados y tabla completa"""
-    
-
 # Crea un estilo de texto más pequeño
     
-
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter,
                             rightMargin=30, leftMargin=30,
