@@ -1,14 +1,60 @@
 {
   "areas": [
-        {"id_area": "A001", "nombre": "Recursos Humanos"},
-        {"id_area": "A002", "nombre": "Contabilidad"},
-        {"id_area": "A003", "nombre": "Ingeniería"},
-        {"id_area": "A004", "nombre": "Logística"},
-        {"id_area": "A005", "nombre": "Ventas"},
-        {"id_area": "A006", "nombre": "Marketing"},
-        {"id_area": "A007", "nombre": "Administración"},
-        {"id_area": "A008", "nombre": "Recursos Humanos"},
-        {"id_area": "A009", "nombre": "IT"},
-        {"id_area": "A010", "nombre": "Finanzas"}
-    ]
+    {
+      "id_area": "A001",
+      "nombre": "Recursos Humanos",
+      "descripcion": "Gestión del talento humano y relaciones laborales"
+    },
+    {
+      "id_area": "A002",
+      "nombre": "Contabilidad",
+      "descripcion": "Control financiero y contable de la empresa"
+    },
+    {
+      "id_area": "A003",
+      "nombre": "Ingeniería",
+      "descripcion": "Desarrollo y diseño de productos"
+    },
+    {
+      "id_area": "A004",
+      "nombre": "Logística",
+      "descripcion": "Gestión de la cadena de suministro"
+    },
+    {
+      "id_area": "A005",
+      "nombre": "Ventas",
+      "descripcion": "Comercialización y atención al cliente"
+    },
+    {
+      "id_area": "A006",
+      "nombre": "Marketing",
+      "descripcion": "Estrategias de mercadeo y publicidad"
+    },
+    {
+      "id_area": "A007",
+      "nombre": "Administración",
+      "descripcion": "Gestión administrativa general"
+    },
+    {
+      "id_area": "A008",
+      "nombre": "IT",
+      "descripcion": "Tecnologías de la información y soporte técnico"
+    },
+    {
+      "id_area": "A009",
+      "nombre": "Finanzas",
+      "descripcion": "Planificación y análisis financiero"
+    },
+    {
+      "id_area": "A010",
+      "nombre": "Operaciones",
+      "descripcion": "Gestión de operaciones y procesos productivos"
+    },
+    {
+      "id_area": "A011",
+      "nombre": "Gestion de Calidad",
+      "descripcion": "",
+      "fecha_creacion": "2025-11-01 13:54:40"
+    }
+  ]
 }

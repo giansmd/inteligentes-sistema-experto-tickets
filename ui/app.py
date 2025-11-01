@@ -260,14 +260,14 @@ elif opcion == "📊 Dashboard":
 elif opcion == "➕ Nuevo Ticket":
     st.header("Crear Nuevo Ticket")
 
-    try:
-        ruta_areas = os.path.join(os.path.dirname(__file__), '..', 'knowledge', 'areas_empresa.json')
-        with open(ruta_areas, 'r', encoding='utf-8') as f:
-            areas_data = json.load(f)
-            json_areas = [area_obj['nombre'] for area_obj in areas_data.get('areas', [])]
-    except Exception as e:
-        st.error(f"Error al cargar áreas: {e}")
-        json_areas = []
+    # Cargar áreas desde el gestor
+    from engine.areas_manager import AreasManager
+    areas_manager = AreasManager()
+    json_areas = areas_manager.get_areas_names()
+    
+    if not json_areas:
+        st.warning("⚠️ No hay áreas registradas. Ve a '⚙️ Configuración' → 'Gestión de Áreas' para agregar áreas.")
+        json_areas = ["Sin áreas disponibles"]
     
     with st.form("form_nuevo_ticket"):
         col1, col2 = st.columns(2)
@@ -275,7 +275,7 @@ elif opcion == "➕ Nuevo Ticket":
         with col1:
             id_ticket = st.text_input("ID del Ticket", value=f"TK{datetime.now().strftime('%Y%m%d%H%M%S')}")
             cliente = st.text_input("Nombre del Cliente")
-            area = st.text_input("Área del Cliente")
+            area = st.selectbox("Área del Cliente", options=json_areas)
         
         with col2:
             fecha = st.date_input("Fecha", value=datetime.now())
@@ -284,44 +284,45 @@ elif opcion == "➕ Nuevo Ticket":
         submitted = st.form_submit_button("🚀 Procesar Ticket")
 
         if submitted:
-            if contenido and cliente and area:
-                if normalizar(area) in [normalizar(a) for a in json_areas]:
-                    # Crear el ticket
-                    nuevo_ticket = {
-                        'id_ticket': id_ticket,
-                        'contenido': contenido,
-                        'cliente': cliente,
-                        'area': area,
-                        'fecha': fecha.strftime('%Y-%m-%d')
-                    }
+            if contenido and cliente and area and area != "Sin áreas disponibles":
+                # Crear el ticket
+                nuevo_ticket = {
+                    'id_ticket': id_ticket,
+                    'contenido': contenido,
+                    'cliente': cliente,
+                    'area': area,
+                    'fecha': fecha.strftime('%Y-%m-%d')
+                }
+                
+                # Clasificar
+                resultado = clasificar_ticket(nuevo_ticket)
+                
+                # Guardar
+                if guardar_ticket_procesado(nuevo_ticket, resultado):
+                    st.success("✅ Ticket procesado y guardado exitosamente!")
                     
-                    # Clasificar
-                    resultado = clasificar_ticket(nuevo_ticket)
+                    # Mostrar resultado
+                    st.info(f"""
+                    **Clasificación:**
+                    - Tipo: {resultado['tipo']}
+                    - Prioridad: {resultado['prioridad']}
+                    - Asignado a: {resultado['asignado_a']}
+                    - Regla aplicada: {resultado['regla']}
+                    """)
                     
-                    # Guardar
-                    if guardar_ticket_procesado(nuevo_ticket, resultado):
-                        st.success("✅ Ticket procesado y guardado exitosamente!")
-                        
-                        # Mostrar resultado
-                        st.info(f"""
-                        **Clasificación:**
-                        - Tipo: {resultado['tipo']}
-                        - Prioridad: {resultado['prioridad']}
-                        - Asignado a: {resultado['asignado_a']}
-                        - Regla aplicada: {resultado['regla']}
-                        """)
-                        
-                        st.balloons()
-                else:
-                    st.error("Área no reconocida. Por favor ingrese un área dentro de la lista mostrada.")
+                    st.balloons()
             else:
                 st.error("Por favor completa todos los campos")
 
     st.divider() 
-    st.subheader("Áreas de la Empresa")
-    st.text("   Las áreas disponibles son:")
-    for i in range(len(json_areas)):
-        st.write(f"{i + 1}. {json_areas[i]}")
+    st.subheader("📋 Áreas de la Empresa Disponibles")
+    if json_areas and json_areas[0] != "Sin áreas disponibles":
+        cols = st.columns(3)
+        for i, area in enumerate(json_areas):
+            with cols[i % 3]:
+                st.info(f"🏢 {area}")
+    else:
+        st.warning("No hay áreas disponibles. Configúralas en ⚙️ Configuración → Gestión de Áreas.")
 
 # OPCIÓN 3: Estadísticas
 
@@ -331,10 +332,20 @@ elif opcion == "📈 Estadísticas":
     st.header("Estadísticas del Sistema")
     mostrar_estadisticas()
 
-# OPCIÓN 4: Configuración - Gestión de Reglas
+# OPCIÓN 4: Configuración
 elif opcion == "⚙️ Configuración":
-    from ui.gestion_reglas import mostrar_gestion_reglas
-    mostrar_gestion_reglas()
+    st.header("⚙️ Configuración del Sistema")
+    
+    # Crear pestañas para diferentes configuraciones
+    tab1, tab2 = st.tabs(["🔧 Gestión de Reglas", "🏢 Gestión de Áreas"])
+    
+    with tab1:
+        from ui.gestion_reglas import mostrar_gestion_reglas
+        mostrar_gestion_reglas()
+    
+    with tab2:
+        from ui.gestion_areas import mostrar_gestion_areas
+        mostrar_gestion_areas()
 
 # OPCIÓN 5: Tests
 elif opcion == "🧐 Tests":
