@@ -139,12 +139,23 @@ def mostrar_estadisticas():
             else:
                 df_filtrado = df_tickets.copy()
 
-            # Filtro secundario
             if filtro_secundario != "Ninguno":
-                opciones_filtro = ["Todos"] + sorted(df_filtrado[filtro_secundario.lower().replace(" ", "_")].dropna().unique())
-                seleccion_filtro = st.selectbox(f"Selecciona {filtro_secundario}:", opciones_filtro)
-                if seleccion_filtro != "Todos":
-                    df_filtrado = df_filtrado[df_filtrado[filtro_secundario.lower().replace(" ", "_")] == seleccion_filtro]
+                # Filtro secundario
+                mapeo_filtros = {
+                    "Prioridad": "prioridad",
+                    "Área": "area",
+                    "Asignado a": "asignado_a",
+                    "Cliente": "cliente"
+                }
+                columna_filtro = mapeo_filtros.get(filtro_secundario, filtro_secundario.lower().replace(" ", "_"))
+                
+                if columna_filtro in df_filtrado.columns:
+                    opciones_filtro = ["Todos"] + sorted(df_filtrado[columna_filtro].dropna().unique())
+                    seleccion_filtro = st.selectbox(f"Selecciona {filtro_secundario}:", opciones_filtro)
+                    if seleccion_filtro != "Todos":
+                        df_filtrado = df_filtrado[df_filtrado[columna_filtro] == seleccion_filtro]
+                else:
+                    st.warning(f"No se encontró la columna correspondiente a '{filtro_secundario}'.")
 
             # --- AGRUPACIÓN ---
             # Normalizar nombres de columnas sin tildes
