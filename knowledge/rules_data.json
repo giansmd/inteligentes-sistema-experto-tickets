@@ -3,7 +3,15 @@
     {
       "id_regla": "TCE-01",
       "nombre": "Incidente de Seguridad (Malware/Phishing)",
-      "palabras_clave": ["virus", "malware", "ransomware", "phishing", "phising", "adjunto sospechoso", "suplantación"],
+      "palabras_clave": [
+        "virus",
+        "malware",
+        "ransomware",
+        "phishing",
+        "phising",
+        "adjunto sospechoso",
+        "suplantación"
+      ],
       "tipo": "SEGURIDAD",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Seguridad",
@@ -12,7 +20,16 @@
     {
       "id_regla": "TCE-02",
       "nombre": "Recuperación de Datos",
-      "palabras_clave": ["perdí", "perdida", "archivo eliminado", "no encuentro", "restaurar", "recuperar", "backup perdido", "datos borrados"],
+      "palabras_clave": [
+        "perdí",
+        "perdida",
+        "archivo eliminado",
+        "no encuentro",
+        "restaurar",
+        "recuperar",
+        "backup perdido",
+        "datos borrados"
+      ],
       "tipo": "SOFTWARE",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Software",
@@ -21,7 +38,16 @@
     {
       "id_regla": "TCE-03",
       "nombre": "Sistema ERP/Finanzas",
-      "palabras_clave": ["erp", "contabilidad", "facturación", "finanzas", "nomina", "siga", "siaf", "sistema contable"],
+      "palabras_clave": [
+        "erp",
+        "contabilidad",
+        "facturación",
+        "finanzas",
+        "nomina",
+        "siga",
+        "siaf",
+        "sistema contable"
+      ],
       "tipo": "SOFTWARE",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Software",
@@ -30,7 +56,14 @@
     {
       "id_regla": "TCE-04",
       "nombre": "Acceso Remoto / VPN",
-      "palabras_clave": ["vpn", "acceso remoto", "escritorio remoto", "teamviewer", "conexión remota", "remote desktop"],
+      "palabras_clave": [
+        "vpn",
+        "acceso remoto",
+        "escritorio remoto",
+        "teamviewer",
+        "conexión remota",
+        "remote desktop"
+      ],
       "tipo": "REDES",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Redes",
@@ -39,7 +72,12 @@
     {
       "id_regla": "TCE-05",
       "nombre": "Equipo No Enciende",
-      "palabras_clave": ["no enciende", "no prende", "pantalla negra", "no inicia"],
+      "palabras_clave": [
+        "no enciende",
+        "no prende",
+        "pantalla negra",
+        "no inicia"
+      ],
       "tipo": "HARDWARE",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Hardware",
@@ -57,7 +95,14 @@
     {
       "id_regla": "TCE-07",
       "nombre": "Problema de Sistema Corporativo",
-      "palabras_clave": ["siga", "siaf", "sgd", "sisper", "sistema", "intranet"],
+      "palabras_clave": [
+        "siga",
+        "siaf",
+        "sgd",
+        "sisper",
+        "sistema",
+        "intranet"
+      ],
       "tipo": "SOFTWARE",
       "prioridad": "Alta",
       "asignado_a": "Equipo de Software",
@@ -66,7 +111,17 @@
     {
       "id_regla": "TCE-08",
       "nombre": "Problema de Periféricos",
-      "palabras_clave": ["mouse", "ratón", "teclado", "monitor", "pantalla", "webcam", "microfono", "altavoz", "parlante"],
+      "palabras_clave": [
+        "mouse",
+        "ratón",
+        "teclado",
+        "monitor",
+        "pantalla",
+        "webcam",
+        "microfono",
+        "altavoz",
+        "parlante"
+      ],
       "tipo": "HARDWARE",
       "prioridad": "Media",
       "asignado_a": "Equipo de Hardware",
@@ -75,7 +130,16 @@
     {
       "id_regla": "TCE-09",
       "nombre": "Equipo Lento",
-      "palabras_clave": ["lento", "lenta", "lentos", "lentas", "demora", "tarda", "rendimiento", "optimizar"],
+      "palabras_clave": [
+        "lento",
+        "lenta",
+        "lentos",
+        "lentas",
+        "demora",
+        "tarda",
+        "rendimiento",
+        "optimizar"
+      ],
       "tipo": "HARDWARE",
       "prioridad": "Media",
       "asignado_a": "Equipo de Hardware",
@@ -84,7 +148,13 @@
     {
       "id_regla": "TCE-10",
       "nombre": "Problema de Impresora",
-      "palabras_clave": ["impresora", "toner", "impresion", "escaner", "atasco"],
+      "palabras_clave": [
+        "impresora",
+        "toner",
+        "impresion",
+        "escaner",
+        "atasco"
+      ],
       "tipo": "HARDWARE",
       "prioridad": "Media",
       "asignado_a": "Equipo de Hardware",
@@ -93,7 +163,13 @@
     {
       "id_regla": "TCE-11",
       "nombre": "Problema de Contraseña",
-      "palabras_clave": ["contraseña", "password", "bloqueada", "expirada", "restablecimiento"],
+      "palabras_clave": [
+        "contraseña",
+        "password",
+        "bloqueada",
+        "expirada",
+        "restablecimiento"
+      ],
       "tipo": "SEGURIDAD",
       "prioridad": "Media",
       "asignado_a": "Equipo de Seguridad",
@@ -120,7 +196,13 @@
     {
       "id_regla": "TCE-14",
       "nombre": "Habilitación/Configuración",
-      "palabras_clave": ["habilitar", "configurar", "activar", "crear", "backup"],
+      "palabras_clave": [
+        "habilitar",
+        "configurar",
+        "activar",
+        "crear",
+        "backup"
+      ],
       "tipo": "SOFTWARE",
       "prioridad": "Baja",
       "asignado_a": "Equipo de Software",
@@ -129,7 +211,13 @@
     {
       "id_regla": "TCE-15",
       "nombre": "Instalación de Software",
-      "palabras_clave": ["instalacion", "instalar", "software", "programa", "aplicacion"],
+      "palabras_clave": [
+        "instalacion",
+        "instalar",
+        "software",
+        "programa",
+        "aplicacion"
+      ],
       "tipo": "SOFTWARE",
       "prioridad": "Baja",
       "asignado_a": "Equipo de Software",
